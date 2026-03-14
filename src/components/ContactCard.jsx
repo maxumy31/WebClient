@@ -1,9 +1,12 @@
-import { useDispatch } from "react-redux";
-import { removeContact } from "../store/contactsSlice";
 import SvgIcon from "./SvgIcon";
 
-export default function ContactCard({ id, name, phone, email }) {
-  const dispatch = useDispatch();
+export default function ContactCard(
+  { id, 
+    name, 
+    phone, 
+    email,
+    onDelete,
+  }) {
 
   return (
     <div className="ring-1 ring-base-300 p-4 flex flex-row rounded-lg w-[60%] min-w-fit justify-between items-center card card-dash">
@@ -28,7 +31,7 @@ export default function ContactCard({ id, name, phone, email }) {
           <span className="truncate">{email}</span>
         </span>
 
-        <button className="btn btn-ghost shrink-0" onClick={() => { dispatch(removeContact(id)) }}>
+        <button className="btn btn-ghost shrink-0" onClick={() => {onDelete(id)}}>
           <SvgIcon name="trash_icon" className={"w-6 h-6 text-primary"}/>
         </button>
       </div>

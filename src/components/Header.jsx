@@ -1,4 +1,4 @@
-import Searchbar from "./SearchBar";
+
 
 export default function Header({ onAddClick }) {
     return (
@@ -11,8 +11,6 @@ export default function Header({ onAddClick }) {
                             <div className="font-bold text-lg md:text-xl">
                                 Список контактов
                             </div>
-
-                            <Searchbar/>
 
                             <button
                                 className="btn btn-primary"
