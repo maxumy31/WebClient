@@ -41,59 +41,64 @@ function reducer(state, action) {
 				errorMessage: null,
 			};
 		case Actions.INPUT_NAME:
-			return {
+			const nameInput = action.data;
+			if (!nameInput) {
+				return {
+					...state,
+					status: States.VALIDATION_ERROR,
+					errorMessage: "Неверно задано имя"
+				};
+			} else return {
 				...state,
-				status: States.CONTACT_INPUT
+				status: States.CONTACT_INPUT,
+				errorMessage: null,
 			};
+
 		case Actions.INPUT_PHONE:
-			return {
+			const phoneInput = action.data;
+			const phoneRegex = /^\+?\d{7,15}$/;
+			if (!phoneRegex.test(phoneInput)) {
+				return {
+					...state,
+					status: States.VALIDATION_ERROR,
+					errorMessage: "Неверный формат номера телефона"
+				};
+			} else return {
 				...state,
-				status: States.CONTACT_INPUT
+				status: States.CONTACT_INPUT,
+				errorMessage: null,
 			};
+
 		case Actions.INPUT_EMAIL:
-			return {
+			const emailInput = action.data;
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		
+			if (!emailRegex.test(emailInput)) {
+				return {
+					...state,
+					status: States.VALIDATION_ERROR,
+					errorMessage: "Неверный формат почты"
+				};
+			} else return {
 				...state,
-				status: States.CONTACT_INPUT
+				status: States.CONTACT_INPUT,
+				errorMessage: null,
 			};
 		case Actions.SAVE_CONTACT:
+			if(state.status === States.VALIDATION_ERROR) {
+				return {...state};
+			}
+
 			const {
 				name,
 				email,
 				phone,
 			} = action.data;
 
-			// Не удалось добавить - слишком много контактов
 			if (state.contact_list.length >= maxSize) {
 				return { ...state, status: States.LIST_FULL };
 			}
 
-			// Не удалось добавить - ошибка валидации
-			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-			if (!emailRegex.test(email)) {
-				return {
-					...state,
-					status: States.VALIDATION_ERROR,
-					errorMessage: "Неверный формат почты"
-				};
-			}
-			const phoneRegex = /^\+?\d{7,15}$/;
-			if (!phoneRegex.test(phone)) {
-				return {
-					...state,
-					status: States.VALIDATION_ERROR,
-					errorMessage: "Неверный формат номера телефона"
-				};
-			}
-
-			if (!name) {
-				return {
-					...state,
-					status: States.VALIDATION_ERROR,
-					errorMessage: "Неверно задано имяы"
-				};
-			}
-
-			// Удалось добавить
 			return {
 				...state,
 				contact_list: [...state.contact_list, {
@@ -153,7 +158,7 @@ function App() {
 						dispatch({ type: Actions.INPUT_EMAIL, data: email });
 					}}
 					onPhoneInput={(phone) => {
-						dispatch({ type: Actions.INPUT_NUMBER, data: phone });
+						dispatch({ type: Actions.INPUT_PHONE, data: phone });
 					}}
 					onNameInput={(name) => {
 						dispatch({ type: Actions.INPUT_NAME, data: name });

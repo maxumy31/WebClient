@@ -31,7 +31,6 @@ export default function AddContactModal({
         return null
     }
 
-    console.log(errorMessage)
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
             <form
@@ -55,7 +54,7 @@ export default function AddContactModal({
                         placeholder="Имя"
                         ref={nameInput}
                         required
-                        onChange={(input) => onNameInput(input)}
+                        onChange={() => onNameInput(nameInput.current.value)}
                         className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
 
@@ -65,7 +64,7 @@ export default function AddContactModal({
                         placeholder="email@example.com"
                         ref={emailInput}
                         required
-                        onChange={(input) => onEmailInput(input)}
+                        onChange={() => onEmailInput(emailInput.current.value)}
                         className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
 
@@ -75,7 +74,7 @@ export default function AddContactModal({
                         placeholder="+79999999999"
                         ref={phoneInput}
                         required
-                        onChange={(input) => onPhoneInput(input)}
+                        onChange={() => onPhoneInput(phoneInput.current.value)}
                         className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                 </div>
