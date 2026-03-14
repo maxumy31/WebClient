@@ -41,62 +41,48 @@ function reducer(state, action) {
 				errorMessage: null,
 			};
 		case Actions.INPUT_NAME:
-			const nameInput = action.data;
-			if (!nameInput) {
-				return {
-					...state,
-					status: States.VALIDATION_ERROR,
-					errorMessage: "Неверно задано имя"
-				};
-			} else return {
-				...state,
-				status: States.CONTACT_INPUT,
-				errorMessage: null,
-			};
-
 		case Actions.INPUT_PHONE:
-			const phoneInput = action.data;
-			const phoneRegex = /^\+?\d{7,15}$/;
-			if (!phoneRegex.test(phoneInput)) {
-				return {
-					...state,
-					status: States.VALIDATION_ERROR,
-					errorMessage: "Неверный формат номера телефона"
-				};
-			} else return {
-				...state,
-				status: States.CONTACT_INPUT,
-				errorMessage: null,
-			};
-
 		case Actions.INPUT_EMAIL:
-			const emailInput = action.data;
-			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		
-			if (!emailRegex.test(emailInput)) {
-				return {
-					...state,
-					status: States.VALIDATION_ERROR,
-					errorMessage: "Неверный формат почты"
-				};
-			} else return {
+			return {
 				...state,
-				status: States.CONTACT_INPUT,
-				errorMessage: null,
+				status: States.CONTACT_INPUT
 			};
 		case Actions.SAVE_CONTACT:
-			if(state.status === States.VALIDATION_ERROR) {
-				return {...state};
-			}
-
 			const {
 				name,
 				email,
 				phone,
 			} = action.data;
 
+
 			if (state.contact_list.length >= maxSize) {
 				return { ...state, status: States.LIST_FULL };
+			}
+
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(email)) {
+				return {
+					...state,
+					status: States.VALIDATION_ERROR,
+					errorMessage: "Неверный формат почты"
+				};
+			}
+
+			const phoneRegex = /^\+?\d{7,15}$/;
+			if (!phoneRegex.test(phone)) {
+				return {
+					...state,
+					status: States.VALIDATION_ERROR,
+					errorMessage: "Неверный формат номера телефона"
+				};
+			}
+
+			if (!name) {
+				return {
+					...state,
+					status: States.VALIDATION_ERROR,
+					errorMessage: "Неверно задано имя"
+				};
 			}
 
 			return {
@@ -158,7 +144,7 @@ function App() {
 						dispatch({ type: Actions.INPUT_EMAIL, data: email });
 					}}
 					onPhoneInput={(phone) => {
-						dispatch({ type: Actions.INPUT_PHONE, data: phone });
+						dispatch({ type: Actions.INPUT_NUMBER, data: phone });
 					}}
 					onNameInput={(name) => {
 						dispatch({ type: Actions.INPUT_NAME, data: name });
