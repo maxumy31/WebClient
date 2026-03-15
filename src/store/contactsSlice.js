@@ -31,7 +31,8 @@ const contactsSlice = createSlice({
     },
 
     removeContact(state, action) {
-      deleteUser(action.payload);
+      deleteUser(action.payload)
+
       getUsers(state.currentPage, state.pageSize, state.searchQuery)
         .then(users => loadData(users));
     },

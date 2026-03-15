@@ -58,7 +58,7 @@ export default function AddContactModal({ isOpen, onClose }) {
                     <div className="flex flex-col gap-4 items-center my-8">
                         <input type="text" className="input" placeholder="Name" ref={nameInput} required />
                         <input type="email" className="input" placeholder="email@example.com" pattern="^.+@.+\..{2,}$" required ref={emailInput} />
-                        <input type="tel" className="input" placeholder="+79999999999" pattern="^\+7[0-9]{10}$" required ref={phoneInput} />
+                        <input type="tel" className="input" placeholder="79999999999" pattern="^\[0-9]{5,15}$" required ref={phoneInput} />
                     </div>
 
                     <div className="flex flex-row justify-center">
