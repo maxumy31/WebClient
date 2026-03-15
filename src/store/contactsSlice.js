@@ -1,9 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { createUser, deleteUser, getUsers } from '../api/api';
 
 
 const initialState = {
   contacts: [],
+  total: 0,
   searchQuery: "",
+  currentPage: 1,
+  pageSize: 10,
 };
 
 const contactsSlice = createSlice({
@@ -22,19 +26,31 @@ const contactsSlice = createSlice({
       }),
 
       reducer: (state, action) => {
-        state.contacts.push(action.payload);
+        createUser(action.payload);
       },
     },
 
     removeContact(state, action) {
-      state.contacts = state.contacts.filter(contact => contact.id != action.payload)
+      deleteUser(action.payload);
+      getUsers(state.currentPage, state.pageSize, state.searchQuery)
+        .then(users => loadData(users));
     },
 
     setSearchQuery(state, action) {
-      state.searchQuery = action.payload
+      state.searchQuery = action.payload;
+      state.currentPage = 1;
+    },
+
+    loadData(state, action) {
+      state.total = action.payload.total;
+      state.contacts = action.payload.users;
+    },
+
+    setPage(state, action) {
+      state.currentPage = action.payload;
     }
   },
 });
 
-export const { addContact, removeContact, setSearchQuery } = contactsSlice.actions;
+export const { addContact, removeContact, setSearchQuery, loadData, setPage } = contactsSlice.actions;
 export default contactsSlice.reducer;
