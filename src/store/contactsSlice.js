@@ -27,11 +27,14 @@ const contactsSlice = createSlice({
 
       reducer: (state, action) => {
         createUser(action.payload);
+
+        getUsers(state.currentPage, state.pageSize, state.searchQuery)
+          .then(users => loadData(users));
       },
     },
 
     removeContact(state, action) {
-      deleteUser(action.payload)
+      deleteUser(action.payload);
 
       getUsers(state.currentPage, state.pageSize, state.searchQuery)
         .then(users => loadData(users));
